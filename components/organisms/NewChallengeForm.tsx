@@ -1,6 +1,3 @@
-import { useState } from "react"
-
-import ReactDatePicker from "react-datepicker"
 import { useForm } from "react-hook-form"
 
 import Button from "../atoms/Button"
@@ -21,7 +18,7 @@ interface FormData {
 }
 
 export default function NewChallengeForm() {
-  const { register, setValue, handleSubmit, errors } = useForm<FormData>()
+  const { register, handleSubmit } = useForm<FormData>()
 
   const onSubmit = handleSubmit(values => {
     console.log(values)
@@ -35,7 +32,7 @@ export default function NewChallengeForm() {
       </div>
       <div className="mb-6 flex flex-col">
         <Label>Date limite</Label>
-        <DateInput />
+        <DateInput name="deadline" ref={register} />
       </div>
 
       <div className="md:flex md:items-center md:justify-between">
@@ -76,6 +73,7 @@ export default function NewChallengeForm() {
 
       <div className="mb-6">
         <Label>Prix</Label>
+
         <SelectInput name="price" ref={register}>
           <option>Choisir...</option>
           {[25, 50, 100, 250, 1000].map(amount => (

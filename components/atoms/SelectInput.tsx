@@ -3,18 +3,12 @@ import { forwardRef, HTMLProps } from "react"
 import classNames from "classnames"
 import cn from "classnames"
 
+import { inputClasses } from "./TextInput"
+
 const SelectInput = forwardRef<HTMLSelectElement, HTMLProps<HTMLSelectElement>>(
   function SelectInput({ className, children, ...props }, ref) {
     const legacy = "block appearance-none text-gray-600 w-full bg-white"
-    const base =
-      "w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md"
-    const focus =
-      "focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300"
-    const dark =
-      "dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600"
-    const darkFocus = " dark:focus:ring-gray-900 dark:focus:border-gray-500"
-
-    const classes = cn(classNames, base, focus, dark, darkFocus, legacy)
+    const classes = cn(classNames, inputClasses, legacy)
 
     return (
       <div className="flex-shrink w-full inline-block relative">
