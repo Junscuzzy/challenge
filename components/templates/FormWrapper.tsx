@@ -4,11 +4,16 @@ export interface FormWrapperProps {
   children: React.ReactNode
   title: string
   subtitle?: string
+  center?: boolean
 }
 
-function FormWrapper({ title, subtitle, children }: FormWrapperProps) {
+function FormWrapper({ title, subtitle, center, children }: FormWrapperProps) {
   return (
-    <div className="max-w-lg mx-auto my-10 bg-white p-5 rounded-md shadow-sm">
+    <div
+      className={`max-w-lg w-full mx-auto h-full bg-white p-5 rounded-md shadow-sm ${
+        center ? "my-auto" : "my-10"
+      }`}
+    >
       <div className="text-center">
         <h1 className="my-3 text-3xl font-semibold text-gray-700 dark:text-gray-200">
           {title}
