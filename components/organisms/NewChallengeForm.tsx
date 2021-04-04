@@ -84,7 +84,9 @@ export default function NewChallengeForm() {
         </SelectInput>
       </div>
 
-      <Button type="submit">C'est parti !</Button>
+      <Button type="submit" fullWidth>
+        C'est parti !
+      </Button>
     </form>
   )
 }

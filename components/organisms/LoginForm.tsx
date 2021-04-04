@@ -32,7 +32,9 @@ export default function LoginForm() {
         <TextInput name="passwordConfirm" type="password" ref={register} />
       </div>
 
-      <Button type="submit">C'est parti !</Button>
+      <Button type="submit" fullWidth>
+        Connexion
+      </Button>
     </form>
   )
 }

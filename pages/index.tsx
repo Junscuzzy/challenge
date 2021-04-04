@@ -1,3 +1,4 @@
+import Counter from "../components/counter"
 import NewChallengeForm from "../components/organisms/NewChallengeForm"
 import FormWrapper from "../components/templates/FormWrapper"
 
@@ -9,6 +10,10 @@ export default function Home() {
           Getting things done
         </h1>
       </div>
+
+      <section className="container mx-auto my-12">
+        <Counter />
+      </section>
 
       <section className="container mx-auto">
         <FormWrapper title="Cap ou pas cap ?" subtitle="Si tu perds, tu paies">
