@@ -26,7 +26,7 @@ function formatDate(date: Date, format: string, locale: string): string {
 
 const DateInput = forwardRef<HTMLInputElement, HTMLProps<HTMLInputElement>>(
   function DateInput({ className, ...props }, ref) {
-    const classes = cn(className, inputClasses)
+    const classes = cn(inputClasses, className)
     const FORMAT = "dd/MM/yyyy"
 
     return (

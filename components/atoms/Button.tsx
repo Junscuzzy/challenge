@@ -1,18 +1,24 @@
-import { HTMLProps } from "react"
+import { forwardRef, HTMLProps } from "react"
 
 import cn from "classnames"
 
 interface ButtonProps extends HTMLProps<HTMLButtonElement> {
   type?: "button" | "submit" | "reset"
+  fullWidth?: boolean
 }
 
-function Button({ className, ...props }: ButtonProps) {
-  const base = "w-full px-3 py-4 text-white bg-indigo-500 rounded-md"
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
+  { className, fullWidth, ...props },
+  ref
+) {
+  const base = "px-3 py-4 text-white bg-indigo-500 rounded-md"
   const focus = "focus:bg-indigo-600 focus:outline-none"
 
-  const classes = cn(className, base, focus)
+  const classes = cn(base, focus, className, {
+    ["w-full"]: !!fullWidth,
+  })
 
-  return <button className={classes} {...props} />
-}
+  return <button ref={ref} className={classes} {...props} />
+})
 
 export default Button

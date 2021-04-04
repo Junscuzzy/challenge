@@ -15,7 +15,7 @@ export const inputClasses = cn(classNames, base, focus, dark, darkFocus)
 
 const TextInput = forwardRef<HTMLInputElement, HTMLProps<HTMLInputElement>>(
   function TextInput({ className, type, ...props }, ref) {
-    const classes = cn(classNames, inputClasses)
+    const classes = cn(inputClasses, classNames)
 
     return (
       <input ref={ref} type={type || "text"} className={classes} {...props} />

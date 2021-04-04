@@ -8,7 +8,7 @@ import { inputClasses } from "./TextInput"
 const SelectInput = forwardRef<HTMLSelectElement, HTMLProps<HTMLSelectElement>>(
   function SelectInput({ className, children, ...props }, ref) {
     const legacy = "block appearance-none text-gray-600 w-full bg-white"
-    const classes = cn(classNames, inputClasses, legacy)
+    const classes = cn(inputClasses, legacy, classNames)
 
     return (
       <div className="flex-shrink w-full inline-block relative">
