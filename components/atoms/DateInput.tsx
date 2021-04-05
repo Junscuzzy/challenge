@@ -27,6 +27,8 @@ function formatDate(date: Date, format: string, locale: string): string {
 const DateInput = forwardRef<HTMLInputElement, HTMLProps<HTMLInputElement>>(
   function DateInput({ className, ...props }, ref) {
     const classes = cn(inputClasses, className)
+    // TODO: Don't pass format like below, date format depends locale
+    // Additionally, can we use web api instead date-fns ?
     const FORMAT = "dd/MM/yyyy"
 
     return (
