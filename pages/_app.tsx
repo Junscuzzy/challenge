@@ -1,23 +1,20 @@
-import "tailwindcss/tailwind.css"
-
 import { AppProps } from "next/app"
 import { Provider } from "react-redux"
+import { PersistGate } from "redux-persist/integration/react"
 
-import Footer from "../components/organisms/footer"
-import Header from "../components/organisms/header"
-import store from "../lib/store"
+import Layout from "../components/Layout/Layout"
+import createStore from "../lib/store"
+
+const { store, persistor } = createStore()
 
 function App({ Component, pageProps }: AppProps) {
-  const mainBase = "min-h-screen flex flex-col bg-gray-50 relative"
-  const mainDark = "dark:bg-black dark:text-white"
-
   return (
     <Provider store={store}>
-      <main className={`${mainBase} ${mainDark}`}>
-        <Header />
-        <Component {...pageProps} />
-        <Footer />
-      </main>
+      <PersistGate loading={null} persistor={persistor}>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </PersistGate>
     </Provider>
   )
 }
