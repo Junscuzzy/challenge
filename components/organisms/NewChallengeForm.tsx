@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form"
 
 import Button from "../atoms/Button"
 import DateInput from "../atoms/DateInput"
-import Label from "../atoms/Label"
+import { Fieldset } from "../atoms/FormUtils"
 import SelectInput from "../atoms/SelectInput"
 import TextInput from "../atoms/TextInput"
 
@@ -18,7 +18,11 @@ interface FormData {
 }
 
 export default function NewChallengeForm() {
-  const { register, handleSubmit } = useForm<FormData>()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>()
 
   const onSubmit = handleSubmit(values => {
     console.log(values)
@@ -26,55 +30,62 @@ export default function NewChallengeForm() {
 
   return (
     <form onSubmit={onSubmit}>
-      <div className="mb-6">
-        <Label>Objectif</Label>
-        <TextInput name="goal" ref={register} />
-      </div>
-      <div className="mb-6 flex flex-col">
-        <Label>Date limite</Label>
-        <DateInput name="deadline" ref={register} />
-      </div>
+      <Fieldset label="Objectif" error={errors.goal?.message}>
+        <TextInput {...register("goal")} />
+      </Fieldset>
+
+      <Fieldset
+        label="Date limite"
+        className="flex flex-col"
+        error={errors.goal?.message}
+      >
+        <DateInput {...register("deadline")} />
+      </Fieldset>
 
       <div className="md:flex md:items-center md:justify-between">
-        <div className="w-full md:w-1/2 md:pr-3 mb-6">
-          <Label>Nom</Label>
-          <TextInput name="name" placeholder="John" ref={register} />
-        </div>
-        <div className="w-full md:w-1/2 md:pl-3 mb-6">
-          <Label>Email</Label>
+        <Fieldset
+          label="Nom"
+          className="w-full md:w-1/2 md:pr-3"
+          error={errors.name?.message}
+        >
+          <TextInput placeholder="John" {...register("name")} />
+        </Fieldset>
+        <Fieldset
+          label="Email"
+          className="w-full md:w-1/2 md:pl-3"
+          error={errors.email?.message}
+        >
           <TextInput
             type="email"
-            name="email"
             placeholder="john@mail.com"
-            ref={register}
+            {...register("email")}
           />
-        </div>
+        </Fieldset>
       </div>
 
       <div className="md:flex md:items-center md:justify-between">
-        <div className="w-full md:w-1/2 md:pr-3 mb-6">
-          <Label>Nom du superviseur</Label>
-          <TextInput
-            name="supervisorName"
-            placeholder="Camille"
-            ref={register}
-          />
-        </div>
-        <div className="w-full md:w-1/2 md:pl-3 mb-6">
-          <Label>Email du superviseur</Label>
+        <Fieldset
+          label="Nom du superviseur"
+          className="w-full md:w-1/2 md:pr-3"
+          error={errors.supervisorName?.message}
+        >
+          <TextInput placeholder="Camille" {...register("supervisorName")} />
+        </Fieldset>
+        <Fieldset
+          label="Email du superviseur"
+          className="w-full md:w-1/2 md:pl-3"
+          error={errors.supervisorEmail?.message}
+        >
           <TextInput
             type="email"
-            name="supervisorEmail"
             placeholder="camille@mail.com"
-            ref={register}
+            {...register("supervisorEmail")}
           />
-        </div>
+        </Fieldset>
       </div>
 
-      <div className="mb-6">
-        <Label>Prix</Label>
-
-        <SelectInput name="price" ref={register}>
+      <Fieldset label="Prix" error={errors.price?.message}>
+        <SelectInput {...register("price")}>
           <option>Choisir...</option>
           {[25, 50, 100, 250, 1000].map(amount => (
             <option key={amount} value={amount}>
@@ -82,7 +93,7 @@ export default function NewChallengeForm() {
             </option>
           ))}
         </SelectInput>
-      </div>
+      </Fieldset>
 
       <Button type="submit" fullWidth>
         C'est parti !

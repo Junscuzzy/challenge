@@ -6,18 +6,30 @@ import { useForm } from "react-hook-form"
 import { useDispatch } from "react-redux"
 import * as yup from "yup"
 
-import { login } from "../../lib/slices/userSlice"
-import { LoginProps } from "../../types/User"
+import { register as registerUser } from "../../lib/slices/userSlice"
+import { RegisterProps } from "../../types/User"
 import Button from "../atoms/Button"
 import { Fieldset } from "../atoms/FormUtils"
 import TextInput from "../atoms/TextInput"
 
-function useLoginForm() {
+function useRegisterForm() {
   const validationSchema = useMemo(
     () =>
       yup.object().shape({
         email: yup.string().email().defined(),
         password: yup.string().min(4).required(),
+        passwordConfirm: yup.string().test({
+          name: "password-confirm",
+          message: "Passwords need to match",
+          test: function () {
+            const { password, passwordConfirm } = this.parent
+            if (password && passwordConfirm !== password) {
+              return false
+            }
+            return true
+          },
+        }),
+        name: yup.string(),
       }),
     []
   )
@@ -28,7 +40,7 @@ function useLoginForm() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginProps>({
+  } = useForm<RegisterProps>({
     resolver: yupResolver(validationSchema),
     defaultValues: {
       email: "",
@@ -36,8 +48,8 @@ function useLoginForm() {
     },
   })
 
-  const onSubmit = useCallback((values: LoginProps) => {
-    dispatch(login(values))
+  const onSubmit = useCallback((values: RegisterProps) => {
+    dispatch(registerUser(values))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -48,11 +60,15 @@ function useLoginForm() {
   }
 }
 
-export default function LoginForm() {
-  const { register, onSubmit, errors } = useLoginForm()
+export default function RegisterForm() {
+  const { register, onSubmit, errors } = useRegisterForm()
 
   return (
     <form onSubmit={onSubmit}>
+      <Fieldset label="Nom" error={errors.name?.message}>
+        <TextInput {...register("name")} />
+      </Fieldset>
+
       <Fieldset label="Email" error={errors.email?.message}>
         <TextInput {...register("email")} />
       </Fieldset>
@@ -61,12 +77,19 @@ export default function LoginForm() {
         <TextInput type="password" {...register("password")} />
       </Fieldset>
 
+      <Fieldset
+        label="Confirmer le mot de passe"
+        error={errors.passwordConfirm?.message}
+      >
+        <TextInput type="password" {...register("passwordConfirm")} />
+      </Fieldset>
+
       <Button type="submit" fullWidth>
-        Connexion
+        Inscription
       </Button>
 
-      <Link href="/register">
-        <a className="text-indigo-500 text-center block mt-3">Inscription</a>
+      <Link href="/login">
+        <a className="text-indigo-500 text-center block mt-3">Connexion</a>
       </Link>
     </form>
   )
