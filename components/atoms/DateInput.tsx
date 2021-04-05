@@ -35,7 +35,7 @@ const DateInput = forwardRef<HTMLInputElement, HTMLProps<HTMLInputElement>>(
         format={FORMAT}
         parseDate={parseDate}
         component={(p: any) => (
-          <input {...{ ref, className: classes, ...props, ...p }} />
+          <input ref={ref} {...{ className: classes, ...props, ...p }} />
         )}
       />
     )
