@@ -37,7 +37,13 @@ export const login = createAsyncThunk<APIResponse, LoginProps, ThunkConfig>(
         return thunkAPI.rejectWithValue({ error: error.errors })
       }
 
-      return response.json()
+      const data = await response.json()
+
+      if (data?.token) {
+        localStorage.setItem("token", data?.token)
+      }
+
+      return data
     } catch (error) {
       return thunkAPI.rejectWithValue({ error: error.message })
     }
@@ -64,10 +70,21 @@ export const register = createAsyncThunk<
       return thunkAPI.rejectWithValue({ error: error.errors })
     }
 
-    return response.json()
+    const data = await response.json()
+
+    if (data?.token) {
+      localStorage.setItem("token", data.token as string)
+    }
+
+    return data
   } catch (error) {
     return thunkAPI.rejectWithValue({ error: error.message })
   }
+})
+
+export const logout = createAsyncThunk("user/logout", async () => {
+  localStorage.removeItem("token")
+  return true
 })
 
 enum LoadingState {
@@ -79,14 +96,12 @@ enum LoadingState {
 
 type UserState = {
   user: User | null
-  token: string
   loading: LoadingState
   error?: ErrorResponse | string
 }
 
 const initialState: UserState = {
   user: null,
-  token: "",
   loading: LoadingState.IDLE,
   error: undefined,
 }
@@ -101,12 +116,10 @@ const userSlice = createSlice({
     })
     builder.addCase(login.fulfilled, (state, action) => {
       state.user = action.payload.user
-      state.token = action.payload.token
     })
     builder.addCase(login.rejected, (state, action) => {
       state.error = action.payload?.error
       state.user = null
-      state.token = ""
     })
 
     builder.addCase(register.pending, state => {
@@ -114,12 +127,14 @@ const userSlice = createSlice({
     })
     builder.addCase(register.fulfilled, (state, action) => {
       state.user = action.payload.user
-      state.token = action.payload.token
     })
     builder.addCase(register.rejected, (state, action) => {
       state.error = action.payload?.error
       state.user = null
-      state.token = ""
+    })
+
+    builder.addCase(logout.fulfilled, state => {
+      state.user = null
     })
   },
 })
